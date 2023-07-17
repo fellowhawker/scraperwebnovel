@@ -4,39 +4,11 @@ const fs = require('fs');
 const fspromise = require('fs').promises;
 
 const baseUrl = 'https://freewebnovel.com/extracting-billions-of-toxins-and-tempering-an-unsullied-body';
-var limitpage = 24; 
+let limitpage = 24;
 const delay = 1000; // 1 second delay
 
-const scrapeData = (html) => {
-  const $ = cheerio.load(html);
-  const novels = $('.m-newest2 .ul-list5 li');
-  const results = [];
-
-  novels.each((index, element) => {
-    const title = $(element).find('a').text();
-    const link = $(element).find('a').attr('href');
-
-    results.push({ title, link });
-  });
-
-  return results;
-};
 
 
-const getLastPage = async (url) => {
-  try {
-    const response = await axios.get(url);
-    const html = response.data;
-
-    const $ = cheerio.load(html);
-    const lastPageHref = $('.page a:last-child').attr('href');
-    const pageNumber = lastPageHref.match(/\d+/)[0];
-    return pageNumber;
-  } catch (error) {
-    console.log('Error:', error);
-    return null;
-  }
-};
 
 const writeToFile = async (dataString) => {
   try {
@@ -54,6 +26,21 @@ const writeToFileReplace = async (dataString) => {
   }
 };
 
+const parserData = (html) => {
+  const $ = cheerio.load(html);
+  const novels = $('.m-newest2 .ul-list5 li');
+  const results = [];
+
+  novels.each((index, element) => {
+    const title = $(element).find('a').text();
+    const link = $(element).find('a').attr('href');
+
+    results.push({ title, link });
+  });
+
+  return results;
+};
+
 const scrapePage = async (pageNumber) => {
   const url = pageNumber === 1 ? baseUrl + ".html" : `${baseUrl}/${pageNumber}.html`;
   console.log(`write page number ${pageNumber}`);
@@ -61,7 +48,7 @@ const scrapePage = async (pageNumber) => {
   try {
     const response = await axios.get(url);
     const html = response.data;
-    const results = scrapeData(html);
+    const results = parserData(html);
 
     const dataString = results
       .map(result => `${result.title};${result.link}\n`)
@@ -77,6 +64,19 @@ const scrapePage = async (pageNumber) => {
   }
 };
 
+const getLastPage = async (url) => {
+  try {
+    const response = await axios.get(url);
+    const html = response.data;
+
+    const $ = cheerio.load(html);
+    const lastPageHref = $('.page a:last-child').attr('href');
+    return lastPageHref.match(/\d+/)[0];
+  } catch (error) {
+    console.log('Error:', error);
+    return null;
+  }
+};
 
 const executeScraping = async () => {
   const urlpage = baseUrl + ".html";
