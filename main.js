@@ -5,9 +5,7 @@ const fspromise = require('fs').promises;
 
 const baseUrl = 'https://freewebnovel.com/extracting-billions-of-toxins-and-tempering-an-unsullied-body';
 let limitpage = 24;
-const delay = 1000; // 1 second delay
-
-
+const delay = 1000;
 
 
 const writeToFile = async (dataString) => {
