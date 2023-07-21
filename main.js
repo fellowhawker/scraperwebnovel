@@ -3,7 +3,7 @@ const cheerio = require('cheerio');
 const fs = require('fs');
 const fspromise = require('fs').promises;
 
-const baseUrl = 'https://freewebnovel.com/extracting-billions-of-toxins-and-tempering-an-unsullied-body';
+const baseUrl = 'https://freewebnovel.com/hp-a-magical-journey';
 let limitpage = 24;
 const delay = 1000;
 

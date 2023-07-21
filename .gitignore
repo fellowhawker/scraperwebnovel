@@ -1,3 +1,5 @@
 /.vs/
 /.idea/
 /node_modules/
+*.txt
+/data/
