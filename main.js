@@ -1,10 +1,9 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
-const fs = require('fs');
 const fspromise = require('fs').promises;
 
 const baseUrl = 'https://freewebnovel.com/hp-a-magical-journey';
-let limitpage = 24;
+// let limitpage = 24;
 const delay = 1000;
 
 
@@ -53,9 +52,9 @@ const scrapePage = async (pageNumber) => {
       .join("");
 
     if (pageNumber === 1) {
-      writeToFileReplace(dataString);
+      await writeToFileReplace(dataString);
     } else {
-      writeToFile(dataString);
+      await writeToFile(dataString);
     }
   } catch (error) {
     console.log('Error:', error);
@@ -84,7 +83,7 @@ const executeScraping = async () => {
     console.log(limitpage);
     
     for (let pageNumber = 1; pageNumber <= limitpage; pageNumber++) {
-      let numbercont = delay * (pageNumber / 2)
+      // let numbercont = delay * (pageNumber / 2)
       await new Promise(resolve => setTimeout(resolve, delay));
       await scrapePage(pageNumber);
     }
@@ -92,4 +91,4 @@ const executeScraping = async () => {
 };
 
 
-executeScraping();
+executeScraping().then(r => console.log(`selesai ${r}`));
