@@ -77,7 +77,7 @@ async function processArray(lines) {
       console.log('Created "data" folder');
     }
   } catch (error) {
-    console.error('Error occurred while checking/creating "data" folder:', error);
+      console.error('Error occurred while checking/creating "data" folder:', error);
     return; // Stop further processing if there's an error
   }
 
